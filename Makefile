@@ -50,69 +50,6 @@ build-chart:
 	helm package -d docs/ ./charts/brigade-gitlab-gateway
 	helm repo index docs/
 
-# All non-functional tests
-.PHONY: test
-test: test-style
-test: test-unit
-test: test-js
-
-# Unit tests. Local only.
-.PHONY: test-unit
-test-unit:
-	go test -v ./...
-
-# Functional tests assume access to github.com
-# To set this up in your local environment:
-# - Make sure kubectl is pointed to the right cluster
-# - Create "myvals.yaml" and set to something like this:
-#   project: "deis/empty-testbed"
-#   repository: "github.com/deis/empty-testbed"
-#   secret: "MySecret"
-# - Run "helm install ./charts/brigade-project -f myvals.yaml
-# - Run "make run" in one terminal
-# - Run "make test-functional" in another terminal
-#
-# This will clone the github.com/deis/empty-testbed repo and run the brigade.js
-# file found there.
-.PHONY: test-functional
-test-functional: test-functional-prepare
-test-functional:
-	go test --tags integration ./tests
-
-# Test Repo is https://github.com/deis/empty-testbed
-TEST_REPO_COMMIT =  589e15029e1e44dee48de4800daf1f78e64287c0
-KUBECONFIG       ?= ${HOME}/.kube/config
-.PHONY: test-functional-prepare
-test-functional-prepare:
-	go run ./tests/cmd/generate.go -kubeconfig $(KUBECONFIG) $(TEST_REPO_COMMIT)
-
-# JS test is local only
-.PHONY: test-js
-test-js:
-	cd brigade-worker && yarn test
-
-.PHONY: test-style
-test-style:
-	gometalinter \
-		--disable-all \
-		--enable deadcode \
-		--severity deadcode:error \
-		--enable gofmt \
-		--enable ineffassign \
-		--enable misspell \
-		--enable vet \
-		--tests \
-		--vendor \
-		--deadline 60s \
-		./...
-	@echo "Recommended style checks ===>"
-	gometalinter \
-		--disable-all \
-		--enable golint \
-		--vendor \
-		--deadline 60s \
-		./... || :
-
 .PHONY: format
 format:
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -d {} + | tee /dev/stderr)" || \
