@@ -1,0 +1,47 @@
+{{ $fullname := include "brigade.gitlab.fullname" . }}
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: {{ $fullname }}
+  labels:
+    app: {{ template "brigade.fullname" . }}
+    chart: "{{ .Chart.Name }}-{{ .Chart.Version }}"
+    release: "{{ .Release.Name }}"
+    heritage: "{{ .Release.Service }}"
+    role: gateway
+    type: gitlab
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: {{ template "brigade.fullname" . }}
+        role: gateway
+        type: gitlab
+    spec:
+      serviceAccountName: {{ $fullname }}
+      containers:
+      - name: {{ .Chart.Name }}
+        image: "{{ .Values.gitlab.registry }}/{{ .Values.gitlab.name }}:{{ default .Chart.AppVersion .Values.gitlab.tag }}"
+        imagePullPolicy: {{ default "IfNotPresent" .Values.gitlab.pullPolicy }}
+        ports:
+        - containerPort: {{ .Values.gitlab.service.internalPort }}
+        livenessProbe:
+          tcpSocket:
+            port: {{ .Values.gitlab.service.internalPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        readinessProbe:
+          tcpSocket:
+            port: {{ .Values.gitlab.service.internalPort }}
+          initialDelaySeconds: 5
+          periodSeconds: 10
+        env:
+          - name: BRIGADE_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          - name: BRIGADE_GITLAB_GATEWAY_PORT
+            value: {{ .Values.gitlab.service.internalPort | quote }}
+      {{ if .Values.privateRegistry }}imagePullSecrets:
+        - name: {{.Values.privateRegistry}}{{ end }}
