@@ -12,6 +12,7 @@ This is a Brigade gateway that listens to GitLab webhooks event stream and trigg
 
 ## Install
 
+### From File
 Clone Brigade GitLab Gateway and change directory
 ```bash
 $ git clone https://github.com/lukepatrick/brigade-gitlab-gateway
@@ -21,6 +22,14 @@ Helm install brigade-gitlab-gateway
 > note name and namespace (something important about brigade core)
 ```bash
 $ helm install --name brigade-gl ./charts/brigade-gitlab-gateway
+```
+
+### From Repo
+Add this project as a helm repo
+
+```bash
+$ helm repo add glgw https://lukepatrick.github.io/brigade-gitlab-gateway
+$ helm install -n brig-gl glgw/brigade-gitlab-gateway
 ```
 
 ## Building from Source
