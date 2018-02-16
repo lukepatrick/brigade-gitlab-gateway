@@ -20,7 +20,7 @@ events.on("push", () => {
 })
 ```
 
-The GitLab Gateway produces 7 events:
+The GitLab Gateway produces 8 events:
 
 ```
 push
@@ -34,4 +34,4 @@ build
 ```
 
 These are based on the events described in the [GitLab Webhooks API](https://gitlab.com/help/user/project/integrations/webhooks) guide.
-Note the *issue* and *
+Note the *Issue* and *ConfidentialIssue* events are treated the same as an `issue` event.
