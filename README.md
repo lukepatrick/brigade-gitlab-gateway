@@ -45,6 +45,10 @@ To build a Docker image
 $ make docker-build
 ```
 
+## [Scripting Guide](docs/scripting.md)
+tl;dr: GitLab Gateway produces 8 events: `push`, `tag`, `issue`, `comment`, `mergerequest`, `wikipage`, `pipeline`, `build`.
+
+
 # Contributing
 
 This project welcomes contributions and suggestions.
