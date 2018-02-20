@@ -45,6 +45,14 @@ To build a Docker image
 $ make docker-build
 ```
 
+## GitLab Integration
+The Default URL for the GitLab Gateway is at `:7446/events/gitlab/`. In your GitLab project, go to Settings -> Integrations. Depending on how you set up 
+your Kubernetes and the GitLab Gateway will determine your externally accessable host/IP/Port. Out of the box the gateway sets up as LoadBalancer; use the host/Cluster IP and check the GitLab Gateway Kubernetes Service for the external port (something like 30001).
+
+Enter that IP/Port and URL at the Webhook Integration URL. The Secret Token will be the same string used in the Brigade Project *values.yaml* `sharedSecret` property.
+
+Check the boxes for the Trigger events to publish from the GitLab instance. SSL is optional.
+
 ## [Scripting Guide](docs/scripting.md)
 tl;dr: GitLab Gateway produces 8 events: `push`, `tag`, `issue`, `comment`, `mergerequest`, `wikipage`, `pipeline`, `build`.
 
