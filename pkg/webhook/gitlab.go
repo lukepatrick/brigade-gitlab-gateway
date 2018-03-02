@@ -25,7 +25,7 @@ func NewGitlabHandler(s storage.Store) *gitlabHandler {
 	}
 }
 
-func (s *gitlabHandler) HandleEvent(repo string, eventType string, commit string, payload []byte, secret string) {
+func (s *gitlabHandler) HandleEvent(repo string, eventType string, rev brigade.Revision, payload []byte, secret string) {
 
 	proj, err := s.store.GetProject(repo)
 
@@ -48,7 +48,7 @@ func (s *gitlabHandler) HandleEvent(repo string, eventType string, commit string
 		log.Printf("!!!WARNING!!! Expected project secret to have name %q, got %q", repo, proj.Name)
 	}
 
-	s.build(eventType, commit, payload, proj)
+	s.build(eventType, rev, payload, proj)
 
 	log.Printf("Build Creation Complete")
 }
@@ -61,13 +61,13 @@ func truncAt(str string, max int) string {
 	return str
 }
 
-func (s *gitlabHandler) build(eventType, commit string, payload []byte, proj *brigade.Project) error {
+func (s *gitlabHandler) build(eventType string, rev brigade.Revision, payload []byte, proj *brigade.Project) error {
 
 	b := &brigade.Build{
 		ProjectID: proj.ID,
 		Type:      eventType,
 		Provider:  "gitlab",
-		Commit:    commit,
+		Revision:  &rev,
 		Payload:   payload,
 	}
 

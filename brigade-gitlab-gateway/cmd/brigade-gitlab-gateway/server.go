@@ -7,6 +7,8 @@ import (
 	"os"
 	"strings"
 
+	"github.com/Azure/brigade/pkg/brigade"
+
 	whgitlab "github.com/lukepatrick/brigade-gitlab-gateway/pkg/webhook"
 
 	"k8s.io/api/core/v1"
@@ -80,7 +82,8 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 
 	glhandler := whgitlab.NewGitlabHandler(store)
 
-	var repo, commit, secret string
+	var repo, secret string
+	var rev brigade.Revision
 	secret = strings.Join(header["X-Gitlab-Token"], "")
 
 	switch payload.(type) {
@@ -89,85 +92,84 @@ func HandleMultiple(payload interface{}, header webhooks.Header) {
 		release := payload.(gitlab.PushEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.CheckoutSHA
+		rev.Commit = release.CheckoutSHA
+		rev.Ref = release.Ref
 
-		glhandler.HandleEvent(repo, "push", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "push", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.TagEventPayload:
 		log.Println("case gitlab.TagEventPayload")
 		release := payload.(gitlab.TagEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.CheckoutSHA
+		rev.Commit = release.CheckoutSHA
+		rev.Ref = release.Ref
 
-		glhandler.HandleEvent(repo, "tag", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "tag", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.IssueEventPayload:
 		log.Println("case gitlab.IssueEventPayload")
 		release := payload.(gitlab.IssueEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.Project.DefaultBranch
+		rev.Ref = release.Project.DefaultBranch
 
-		glhandler.HandleEvent(repo, "issue", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "issue", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.ConfidentialIssueEventPayload:
 		log.Println("case gitlab.ConfidentialIssueEventPayload")
 		release := payload.(gitlab.ConfidentialIssueEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.Project.DefaultBranch
+		rev.Ref = release.Project.DefaultBranch
 
-		glhandler.HandleEvent(repo, "issue", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "issue", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.CommentEventPayload:
 		log.Println("case gitlab.CommentEventPayload")
 		release := payload.(gitlab.CommentEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.Commit.ID
+		rev.Commit = release.Commit.ID
 
-		glhandler.HandleEvent(repo, "comment", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "comment", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.MergeRequestEventPayload:
 		log.Println("case gitlab.MergeRequestEventPayload")
-		//release := payload.(gitlab.MergeRequestEventPayload)
+		release := payload.(gitlab.MergeRequestEventPayload)
 
-		log.Println("do nothing")
-		// do nothing, waiting on
-		// https://github.com/go-playground/webhooks/pull/24
-		// repo = release.
-		// commit = release.Commit.ID
+		repo = release.Project.PathWithNamespace
+		rev.Ref = release.Project.DefaultBranch
 
-		// //repo string, eventType string, commit string, payload []byte, secret)
-		// glhandler.HandleEvent(repo, "merge_request", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "mergerequest", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.WikiPageEventPayload:
 		log.Println("case gitlab.WikiPageEventPayload")
 		release := payload.(gitlab.WikiPageEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.Project.DefaultBranch
+		rev.Ref = release.Project.DefaultBranch
 
-		glhandler.HandleEvent(repo, "wikipage", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "wikipage", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.PipelineEventPayload:
 		log.Println("case gitlab.PipelineEventPayload")
 		release := payload.(gitlab.PipelineEventPayload)
 
 		repo = release.Project.PathWithNamespace
-		commit = release.Commit.ID
+		rev.Commit = release.Commit.ID
 
-		glhandler.HandleEvent(repo, "pipeline", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "pipeline", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	case gitlab.BuildEventPayload:
 		log.Println("case gitlab.BuildEventPayload")
 		release := payload.(gitlab.BuildEventPayload)
 
 		repo = release.ProjectName
-		commit = release.SHA
+		rev.Commit = release.SHA
+		rev.Ref = release.Ref
 
-		glhandler.HandleEvent(repo, "build", commit, []byte(fmt.Sprintf("%v", release)), secret)
+		glhandler.HandleEvent(repo, "build", rev, []byte(fmt.Sprintf("%v", release)), secret)
 
 	default:
 		log.Printf("Unsupported event")

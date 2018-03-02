@@ -23,3 +23,9 @@
 
 [[constraint]]
   name = "gopkg.in/go-playground/webhooks.v3"
+  version = "3.8.0"
+  source = "https://github.com/go-playground/webhooks/tree/v3"
+
+[[constraint]]
+  name = "github.com/Azure/brigade"
+  version = "0.10.0"

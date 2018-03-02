@@ -19,9 +19,9 @@ $ git clone https://github.com/lukepatrick/brigade-gitlab-gateway
 $ cd brigade-gitlab-gateway
 ```
 Helm install brigade-gitlab-gateway
-> note name and namespace (something important about brigade core)
+> note name and namespace can be customized. 
 ```bash
-$ helm install --name brigade-gl ./charts/brigade-gitlab-gateway
+$ helm install --name gl-gw ./charts/brigade-gitlab-gateway
 ```
 
 ### From Repo
@@ -29,7 +29,7 @@ Add this project as a helm repo
 
 ```bash
 $ helm repo add glgw https://lukepatrick.github.io/brigade-gitlab-gateway
-$ helm install -n brig-gl glgw/brigade-gitlab-gateway
+$ helm install -n gl-gw glgw/brigade-gitlab-gateway
 ```
 
 ## Building from Source
@@ -44,6 +44,13 @@ To build a Docker image
 ```bash
 $ make docker-build
 ```
+
+## Compatibility
+
+| GitLab Gateway | Brigade Core |
+|----------------|--------------|
+| v0.10.0        | v0.10.0      |
+| v0.1.0         | v0.9.0 (and previous)|
 
 ## GitLab Integration
 The Default URL for the GitLab Gateway is at `:7446/events/gitlab/`. In your GitLab project, go to Settings -> Integrations. Depending on how you set up 

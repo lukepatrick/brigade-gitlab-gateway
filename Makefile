@@ -55,23 +55,14 @@ format:
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -d {} + | tee /dev/stderr)" || \
 	test -z "$$(find . -path ./vendor -prune -type f -o -name '*.go' -exec gofmt -w {} + | tee /dev/stderr)"
 
-HAS_NPM          := $(shell command -v npm;)
-HAS_ESLINT       := $(shell command -v eslint;)
 HAS_GOMETALINTER := $(shell command -v gometalinter;)
 HAS_DEP          := $(shell command -v dep;)
 HAS_GIT          := $(shell command -v git;)
-HAS_BINDATA      := $(shell command -v go-bindata;)
 
 .PHONY: bootstrap
 bootstrap:
-ifndef HAS_NPM
-	$(error You must install npm)
-endif
 ifndef HAS_GIT
 	$(error You must install git)
-endif
-ifndef HAS_ESLINT
-	npm install -g eslint
 endif
 ifndef HAS_GOMETALINTER
 	go get -u github.com/alecthomas/gometalinter
