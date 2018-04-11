@@ -1,6 +1,6 @@
 {{- if .Values.ingress.enabled -}}
-{{- $serviceName := include "brigade.gw.fullname" . -}}
-{{- $servicePort := .Values.service.externalPort -}}
+{{- $serviceName := include "brigade.gitlab.fullname" . -}}
+{{- $servicePort := .Values.gitlab.service.externalPort -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
