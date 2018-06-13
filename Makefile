@@ -71,7 +71,4 @@ endif
 ifndef HAS_DEP
 	go get -u github.com/golang/dep/cmd/dep
 endif
-ifndef HAS_BINDATA
-	go get github.com/jteeuwen/go-bindata/...
-endif
 	dep ensure

@@ -41,11 +41,16 @@ func main() {
 	flag.Parse()
 
 	hook := gitlab.New(&gitlab.Config{Secret: ""})
-	hook.RegisterEvents(HandleMultiple, gitlab.PushEvents,
-		gitlab.TagEvents, gitlab.IssuesEvents,
-		gitlab.ConfidentialIssuesEvents, gitlab.CommentEvents,
-		gitlab.MergeRequestEvents, gitlab.WikiPageEvents,
-		gitlab.PipelineEvents, gitlab.BuildEvents) // Add as many as needed
+	hook.RegisterEvents(HandleMultiple,
+		gitlab.PushEvents,
+		gitlab.TagEvents,
+		gitlab.IssuesEvents,
+		gitlab.ConfidentialIssuesEvents,
+		gitlab.CommentEvents,
+		gitlab.MergeRequestEvents,
+		gitlab.WikiPageEvents,
+		gitlab.PipelineEvents,
+		gitlab.BuildEvents) // Add as many as needed
 
 	err := webhooks.Run(hook, ":"+gatewayPort, path)
 	if err != nil {
@@ -62,7 +67,7 @@ func defaultNamespace() string {
 }
 
 func defaultGatewayPort() string {
-	if port, ok := os.LookupEnv("BRIGADE_GATEWAY_PORT"); ok {
+	if port, ok := os.LookupEnv("BRIGADE_GITLAB_GATEWAY_PORT"); ok {
 		return port
 	}
 	return "7746"
