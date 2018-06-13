@@ -2,8 +2,18 @@ apiVersion: v1
 entries:
   brigade-gitlab-gateway:
   - apiVersion: v1
+    appVersion: v0.11.0
+    created: 2018-06-13T11:23:05.453583683-06:00
+    description: Brigade GitLab Gateway provides events from GitLab to the Brigade
+      pipeline
+    digest: cd7e44b01148ff24c2fc4ea01267b819939c6a274227c504e7dce1602d076c3a
+    name: brigade-gitlab-gateway
+    urls:
+    - brigade-gitlab-gateway-0.11.0.tgz
+    version: 0.11.0
+  - apiVersion: v1
     appVersion: v0.10.0
-    created: 2018-03-02T07:37:04.640821-07:00
+    created: 2018-06-13T11:23:05.453252492-06:00
     description: Brigade GitLab Gateway provides events from GitLab to the Brigade
       pipeline
     digest: 3f162e0677cf0a65b345844b779aa29fc8d17774cce79cf117575b49bf9bf734
@@ -13,7 +23,7 @@ entries:
     version: 0.10.0
   - apiVersion: v1
     appVersion: v0.1.0
-    created: 2018-03-02T07:37:04.640532-07:00
+    created: 2018-06-13T11:23:05.452887967-06:00
     description: Brigade GitLab Gateway provides events from GitLab to the Brigade
       pipeline
     digest: 6a848a9ebfd11ec9cb463a32c57ace558ce900bae367550feef2ad75b027e8ac
@@ -21,4 +31,4 @@ entries:
     urls:
     - brigade-gitlab-gateway-0.1.0.tgz
     version: 0.1.0
-generated: 2018-03-02T07:37:04.639717-07:00
+generated: 2018-06-13T11:23:05.452268396-06:00
