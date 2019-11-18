@@ -1,7 +1,7 @@
 # The Docker registry where images are pushed.
 # Note that if you use an org (like on Quay and DockerHub), you should
 # include that: quay.io/foo
-DOCKER_REGISTRY    ?= lukepatrick
+DOCKER_REGISTRY    ?= brigadecore
 DOCKER_BUILD_FLAGS :=
 LDFLAGS            :=
 
@@ -12,7 +12,7 @@ DOCKER_BINS = brigade-gitlab-gateway
 GIT_TAG   = $(shell git describe --tags --always 2>/dev/null)
 VERSION   ?= ${GIT_TAG}
 IMAGE_TAG ?= ${VERSION}
-LDFLAGS   += -X github.com/lukepatrick/brigade-gitlab-gateway/pkg/version.Version=$(VERSION)
+LDFLAGS   += -X github.com/brigadecore/brigade-gitlab-gateway/pkg/version.Version=$(VERSION)
 
 # Build native binaries
 .PHONY: build

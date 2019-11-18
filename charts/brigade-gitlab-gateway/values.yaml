@@ -23,7 +23,7 @@ rbac:
 # gitlab is the gitlab gateway.
 gitlab:
   enabled: true
-  registry: lukepatrick
+  registry: brigadecore
   name: brigade-gitlab-gateway
   #tag:
   #pullPolicy: IfNotPresent

@@ -9,7 +9,7 @@ import (
 
 	"github.com/brigadecore/brigade/pkg/brigade"
 
-	whgitlab "github.com/lukepatrick/brigade-gitlab-gateway/pkg/webhook"
+	whgitlab "github.com/brigadecore/brigade-gitlab-gateway/pkg/webhook"
 
 	"k8s.io/api/core/v1"
 

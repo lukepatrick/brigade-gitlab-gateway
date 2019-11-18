@@ -1,6 +1,6 @@
 # Brigade GitLab Gateway Documentation
 
-[Home](https://github.com/lukepatrick/brigade-gitlab-gateway/blob/master/README.md)
+[Home](https://github.com/brigadecore/brigade-gitlab-gateway/blob/master/README.md)
 
 Send [GitLab events](https://gitlab.com/help/user/project/integrations/webhooks) into a [Brigade](https://github.com/brigadecore/brigade) pipeline. 
 
