@@ -7,13 +7,13 @@ import (
 	"os"
 	"strings"
 
-	"github.com/Azure/brigade/pkg/brigade"
+	"github.com/brigadecore/brigade/pkg/brigade"
 
 	whgitlab "github.com/lukepatrick/brigade-gitlab-gateway/pkg/webhook"
 
 	"k8s.io/api/core/v1"
 
-	"github.com/Azure/brigade/pkg/storage/kube"
+	"github.com/brigadecore/brigade/pkg/storage/kube"
 
 	"gopkg.in/go-playground/webhooks.v3"
 	"gopkg.in/go-playground/webhooks.v3/gitlab"

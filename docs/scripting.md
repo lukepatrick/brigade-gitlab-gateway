@@ -2,7 +2,7 @@
 
 This guide explains the basics of events available to `brigade.js` files.
 
-For more, see the [Brigade Scripting Guide](https://github.com/Azure/brigade/blob/master/docs/topics/scripting.md)
+For more, see the [Brigade Scripting Guide](https://github.com/brigadecore/brigade/blob/master/docs/topics/scripting.md)
 
 # Brigade GitLab Events
 
